@@ -1,0 +1,6 @@
+{
+  "name": "BotHostX",
+  "description": "SmartHost mobile cloud hosting platform for Python bots, Telegram bots, PHP scripts, and HTML websites with Multi-VPS Management and Admin Panel.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
