@@ -1,17 +1,26 @@
-# BotHostX (SmartHost — Mobile Hosting Platform)
+# SmartHost / BotHostX — Secure VPS Agent
 
-Complete mobile cloud hosting platform allowing users to deploy and manage isolated **Python Bots**, **Telegram Bots**, **PHP Scripts**, and **HTML Websites** from Android, backed by **FastAPI + PostgreSQL + Docker** and a full **Multi-VPS Admin Management System**.
+This service runs on each remote Linux VPS added by the SmartHost Administrator. It never exposes an unauthenticated management port: every request from the central SmartHost Backend must carry:
+1. TLS encryption (`https://<vps-ip-or-host>:9443`)
+2. `Authorization: Bearer <VPS_AGENT_TOKEN>`
+3. `X-SmartHost-Timestamp` (120-second replay window)
+4. `X-SmartHost-Signature` (HMAC-SHA256 over `<timestamp>.<raw_body>`)
 
-## Repository Structure
+## Setup on Each Target Linux VPS
 
-- `app/` — Android mobile client (`com.bothost.mobile`) built with Kotlin, Jetpack Compose, Material 3, MVVM, Navigation Compose, Retrofit/OkHttp/Moshi, Coroutines, DataStore, Coil, and Android File Picker.
-- `New/BotHostX.apk` — Compiled Android APK ready for direct download/installation.
-- `backend/` — Production Python FastAPI REST API, SQLAlchemy 2.0 ORM (23 models), Alembic migrations, Fernet secret encryption (`VPS_ENCRYPTION_KEY`), pinned-host-key SSH + HMAC-signed VPS Agent client, resource-aware VPS selector, 10-step safe VPS migrator, and background health worker.
-- `vps-agent/` — Authenticated Docker isolation agent deployed on worker Linux VPS servers.
-- `DEPLOYMENT.md` — Full step-by-step Linux VPS, PostgreSQL, HTTPS, wildcard domain, and Multi-VPS setup guide.
+```bash
+# 1. Install Docker Engine
+curl -fsSL https://get.docker.com | sh
+systemctl enable --now docker
 
-## Configuring the Android App API Endpoint
+# 2. Pre-pull isolated hosting runtime images
+docker pull python:3.12-slim
+docker pull php:8.3-apache
+docker pull nginx:1.27-alpine
 
-1. Deploy `backend/` to your Linux server following `DEPLOYMENT.md` and configure your private `backend/.env` (including `ADMIN_EMAIL=teamnovabd@gmail.com` and your private `ADMIN_PASSWORD`).
-2. Launch **BotHostX** on Android, tap the **Server Endpoint** button on Onboarding, Login, or Settings, enter your HTTPS API URL (e.g., `https://api.yourdomain.com`), and tap **Verify & Save**.
-3. Sign in as a regular user or sign in with `teamnovabd@gmail.com` to access the **SmartHost Admin Panel** and **Multi-VPS Management**.
+# 3. Generate a 48-byte random Agent Token (paste this into Admin Panel -> Add VPS -> Agent Token)
+openssl rand -hex 32
+
+# 4. Run the VPS Agent behind TLS + firewall restricted to your Central Backend IP
+ufw allow from <CENTRAL_BACKEND_PUBLIC_IP> to any port 9443 proto tcp
+```

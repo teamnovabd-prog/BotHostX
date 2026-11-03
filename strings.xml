@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">BotHostX</string>
+    <string name="platform_subtitle">SmartHost Mobile Cloud Hosting</string>
+    <string name="tagline">Your Bots. Always Online.</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_hosting">Hosting</string>
+    <string name="nav_plans">Plans</string>
+    <string name="nav_wallet">Wallet</string>
+    <string name="nav_profile">Profile</string>
+    <string name="action_create_hosting">Create Hosting</string>
+    <string name="action_configure_server">Configure Backend API</string>
+    <string name="action_retry">Retry</string>
+    <string name="action_sign_in">Sign In</string>
+    <string name="action_register">Create Account</string>
+    <string name="action_logout">Sign Out</string>
+    <string name="admin_panel_title">SmartHost Admin Panel</string>
+    <string name="vps_management_title">VPS Management</string>
+    <string name="currency_bdt_symbol">৳</string>
+    <string name="cd_brand_logo">BotHostX Mobile Cloud Hosting Logo</string>
+    <string name="cd_notifications">Notifications</string>
+    <string name="cd_back">Navigate back</string>
+    <string name="cd_server_settings">Backend Server Settings</string>
+</resources>
